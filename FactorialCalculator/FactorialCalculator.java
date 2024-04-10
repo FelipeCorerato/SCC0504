@@ -32,7 +32,6 @@ public class FactorialCalculator {
 
     public static void main(String[] args) {
         // Instantiates the scanner to read inputs
-
         try (Scanner scanner = new Scanner(System.in)) { // Uses ARM to close scanner as finally clause
             // Reads input number
             int inputNumber = Integer.parseInt(scanner.nextLine());
