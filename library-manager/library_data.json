@@ -1,0 +1,89 @@
+{
+  "books": [
+    {
+      "title": "Java Programming",
+      "author": "John Doe",
+      "isbn": "1234567890",
+      "category": "Programming",
+      "isAvailable": true
+    },
+    {
+      "title": "Effective Java",
+      "author": "Joshua Bloch",
+      "isbn": "0987654321",
+      "category": "Programming",
+      "isAvailable": true
+    },
+    {
+      "title": "Clean Code",
+      "author": "Robert C. Martin",
+      "isbn": "1122334455",
+      "category": "Programming",
+      "isAvailable": true
+    }
+  ],
+  "patrons": [
+    {
+      "name": "Alice",
+      "contactInfo": "alice@example.com"
+    },
+    {
+      "name": "Bob",
+      "contactInfo": "bob@example.com"
+    },
+    {
+      "name": "Charlie",
+      "contactInfo": "charlie@example.com"
+    }
+  ],
+  "loans": [
+    {
+      "book": {
+        "title": "Java Programming",
+        "author": "John Doe",
+        "isbn": "1234567890",
+        "category": "Programming",
+        "isAvailable": true
+      },
+      "patron": {
+        "name": "Alice",
+        "contactInfo": "alice@example.com"
+      },
+      "loanDate": "2023-06-01",
+      "dueDate": "2023-06-15",
+      "isReturned": false
+    },
+    {
+      "book": {
+        "title": "Effective Java",
+        "author": "Joshua Bloch",
+        "isbn": "0987654321",
+        "category": "Programming",
+        "isAvailable": true
+      },
+      "patron": {
+        "name": "Bob",
+        "contactInfo": "bob@example.com"
+      },
+      "loanDate": "2023-06-06",
+      "dueDate": "2023-06-20",
+      "isReturned": false
+    },
+    {
+      "book": {
+        "title": "Clean Code",
+        "author": "Robert C. Martin",
+        "isbn": "1122334455",
+        "category": "Programming",
+        "isAvailable": true
+      },
+      "patron": {
+        "name": "Charlie",
+        "contactInfo": "charlie@example.com"
+      },
+      "loanDate": "2023-06-11",
+      "dueDate": "2023-06-25",
+      "isReturned": false
+    }
+  ]
+}
