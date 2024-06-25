@@ -1,3 +1,5 @@
+package model;
+
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
@@ -24,6 +26,6 @@ public class Patron implements Serializable {
 
     @Override
     public String toString() {
-        return "Patron [Name=" + name + ", Contact Info=" + contactInfo + "]";
+        return name + " (" + contactInfo + ")";
     }
 }

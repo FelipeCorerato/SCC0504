@@ -1,5 +1,8 @@
+package model;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import util.LocalDateAdapter;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -68,6 +71,10 @@ public class LibraryManager {
     }
 
     // Gerenciamento de Empréstimos
+    public void addLoan(Loan loan) {
+        loans.add(loan);
+    }
+
     public void checkOutBook(Book book, Patron patron) {
         if (book.isAvailable()) {
             book.setAvailable(false);
@@ -86,11 +93,8 @@ public class LibraryManager {
         }
     }
 
-    public List<Loan> getOverdueLoans() {
-        LocalDate today = LocalDate.now();
-        return loans.stream()
-                .filter(loan -> !loan.isReturned() && loan.getDueDate().isBefore(today))
-                .collect(Collectors.toList());
+    public List<Loan> getLoans() {
+        return loans;
     }
 
     // Métodos de I/O com JSON

@@ -1,3 +1,5 @@
+package model;
+
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
@@ -45,6 +47,6 @@ public class Book implements Serializable {
 
     @Override
     public String toString() {
-        return "Book [Title=" + title + ", Author=" + author + ", ISBN=" + isbn + ", Category=" + category + "]";
+        return title + " by " + author;
     }
 }

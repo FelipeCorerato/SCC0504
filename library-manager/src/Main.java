@@ -1,3 +1,8 @@
+import model.Book;
+import model.LibraryManager;
+import model.Loan;
+import model.Patron;
+
 import java.util.List;
 
 public class Main {
@@ -22,14 +27,14 @@ public class Main {
 
         // Realizar empréstimo
         libraryManager.checkOutBook(book1, patron1);
-        System.out.println("Book checked out: " + book1);
+        System.out.println("model.Book checked out: " + book1);
 
         // Empréstimos em atraso
-        List<Loan> overdueLoans = libraryManager.getOverdueLoans();
+        List<Loan> overdueLoans = libraryManager.getLoans();
         System.out.println("Overdue Loans: " + overdueLoans);
 
         // Devolver livro
         libraryManager.checkInBook(book1);
-        System.out.println("Book checked in: " + book1);
+        System.out.println("model.Book checked in: " + book1);
     }
 }

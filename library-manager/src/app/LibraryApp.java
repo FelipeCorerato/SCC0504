@@ -1,3 +1,15 @@
+package app;
+
+import model.AuthManager;
+import model.LibraryManager;
+import model.Role;
+import model.User;
+import view.BookPanel;
+import view.LoanPanel;
+import view.PatronPanel;
+import view.SearchPanel;
+import view.UserManagementPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -9,9 +21,11 @@ public class LibraryApp extends JFrame {
     private BookPanel bookPanel;
     private PatronPanel patronPanel;
     private LoanPanel loanPanel;
+    private UserManagementPanel userManagementPanel;
+    private SearchPanel searchPanel;
 
     public LibraryApp() {
-        setLookAndFeel();  // Chame este método antes de inicializar a UI
+        setLookAndFeel();
         libraryManager = new LibraryManager();
         authManager = new AuthManager();
         initializeUI();
@@ -46,21 +60,23 @@ public class LibraryApp extends JFrame {
 
         // Painel de navegação
         JPanel navigationPanel = new JPanel();
-        navigationPanel.setLayout(new GridLayout(1, 6));
+        navigationPanel.setLayout(new GridLayout(1, 5));
 
         JButton bookButton = new JButton("Books");
         JButton patronButton = new JButton("Patrons");
         JButton loanButton = new JButton("Loans");
-        JButton addUserButton = new JButton("Add User");
-        JButton saveButton = new JButton("Save");
-        JButton loadButton = new JButton("Load");
+        JButton searchButton = new JButton("Search");
+        JButton userManagementButton = new JButton("User Management");
 
         navigationPanel.add(bookButton);
         navigationPanel.add(patronButton);
         navigationPanel.add(loanButton);
-        navigationPanel.add(addUserButton);
-        navigationPanel.add(saveButton);
-        navigationPanel.add(loadButton);
+        navigationPanel.add(searchButton);
+
+        // Adiciona o botão de gerenciamento de usuários apenas para administradores
+        if (loggedInUser.getRole() == Role.ADMIN) {
+            navigationPanel.add(userManagementButton);
+        }
 
         add(navigationPanel, BorderLayout.NORTH);
 
@@ -69,12 +85,16 @@ public class LibraryApp extends JFrame {
         contentPanel.setLayout(new CardLayout());
 
         loanPanel = new LoanPanel(libraryManager);
-        bookPanel = new BookPanel(libraryManager, loanPanel); // Passa a referência do LoanPanel para o BookPanel
-        patronPanel = new PatronPanel(libraryManager, loanPanel); // Passa a referência do LoanPanel para o PatronPanel
+        bookPanel = new BookPanel(libraryManager, loanPanel);
+        patronPanel = new PatronPanel(libraryManager, loanPanel);
+        userManagementPanel = new UserManagementPanel(authManager, loggedInUser);
+        searchPanel = new SearchPanel(libraryManager);
 
         contentPanel.add(bookPanel, "Books");
         contentPanel.add(patronPanel, "Patrons");
         contentPanel.add(loanPanel, "Loans");
+        contentPanel.add(userManagementPanel, "User Management");
+        contentPanel.add(searchPanel, "Search");
 
         add(contentPanel, BorderLayout.CENTER);
 
@@ -84,17 +104,8 @@ public class LibraryApp extends JFrame {
         bookButton.addActionListener(e -> cardLayout.show(contentPanel, "Books"));
         patronButton.addActionListener(e -> cardLayout.show(contentPanel, "Patrons"));
         loanButton.addActionListener(e -> cardLayout.show(contentPanel, "Loans"));
-
-        addUserButton.addActionListener(e -> {
-            if (loggedInUser != null && "admin".equals(loggedInUser.getRole())) {
-                addUserInterface();
-            } else {
-                JOptionPane.showMessageDialog(this, "Only admin users can add new users.", "Access Denied", JOptionPane.WARNING_MESSAGE);
-            }
-        });
-
-        saveButton.addActionListener(e -> saveData());
-        loadButton.addActionListener(e -> loadData());
+        searchButton.addActionListener(e -> cardLayout.show(contentPanel, "Search"));
+        userManagementButton.addActionListener(e -> cardLayout.show(contentPanel, "User Management"));
     }
 
     private boolean authenticateUser() {
@@ -169,46 +180,13 @@ public class LibraryApp extends JFrame {
         return loggedInUser != null;
     }
 
-    private void addUserInterface() {
-        JPanel addUserPanel = new JPanel(new GridLayout(4, 2));
-        JTextField usernameField = new JTextField();
-        JPasswordField passwordField = new JPasswordField();
-        JComboBox<String> roleComboBox = new JComboBox<>(new String[] { "librarian", "admin" });
-
-        addUserPanel.add(new JLabel("New Username:"));
-        addUserPanel.add(usernameField);
-        addUserPanel.add(new JLabel("New Password:"));
-        addUserPanel.add(passwordField);
-        addUserPanel.add(new JLabel("Role:"));
-        addUserPanel.add(roleComboBox);
-
-        int result = JOptionPane.showConfirmDialog(this, addUserPanel, "Add User", JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
-            String role = (String) roleComboBox.getSelectedItem();
-
-            authManager.addUser(username, password, role);
-            JOptionPane.showMessageDialog(this, "User added successfully");
-        }
-    }
-
-    private void saveData() {
-        try {
-            libraryManager.saveData();
-            JOptionPane.showMessageDialog(this, "Data saved successfully");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void loadData() {
         try {
             libraryManager.loadData();
-            bookPanel.updateBookList();
-            patronPanel.updatePatronList();
-            loanPanel.updateLoanList();
-            loanPanel.updateComboBoxes();
+            bookPanel.updateBookTable();
+            patronPanel.updatePatronTable();
+            loanPanel.updateLoanTable();
+            loanPanel.updateComboBoxes(); // Atualiza comboBoxes após carregar dados
             JOptionPane.showMessageDialog(this, "Data loaded successfully");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

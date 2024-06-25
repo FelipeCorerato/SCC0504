@@ -1,4 +1,7 @@
+package model;
+
 import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -46,6 +49,6 @@ public class Loan implements Serializable {
 
     @Override
     public String toString() {
-        return "Loan [Book=" + book + ", Patron=" + patron + ", Loan Date=" + loanDate + ", Due Date=" + dueDate + ", Returned=" + isReturned + "]";
+        return "model.Loan [model.Book=" + book + ", model.Patron=" + patron + ", model.Loan Date=" + loanDate + ", Due Date=" + dueDate + ", Returned=" + isReturned + "]";
     }
 }
