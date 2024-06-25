@@ -162,10 +162,10 @@ public class LibraryApp extends JFrame {
 
             loggedInUser = authManager.authenticate(username, password);
             if (loggedInUser != null) {
-                JOptionPane.showMessageDialog(this, "Login successful", "Welcome", JOptionPane.INFORMATION_MESSAGE);
-                loginPanel.getTopLevelAncestor().setVisible(false);
+                JOptionPane.showMessageDialog(loginPanel, "Login successful", "Welcome", JOptionPane.INFORMATION_MESSAGE);
+                SwingUtilities.getWindowAncestor(loginPanel).dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(loginPanel, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

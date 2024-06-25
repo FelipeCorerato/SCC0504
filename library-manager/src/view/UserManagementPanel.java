@@ -7,6 +7,7 @@ import model.User;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 
 public class UserManagementPanel extends JPanel {
@@ -81,9 +82,14 @@ public class UserManagementPanel extends JPanel {
             Role role = (Role) roleComboBox.getSelectedItem();
 
             User newUser = new User(username, password, role);
-            authManager.addUser(newUser);
-            updateUserTable();
-            saveData();  // Salva os dados após a alteração
+            boolean success = authManager.addUser(newUser);
+            if (success) {
+                updateUserTable();
+                saveData();  // Salva os dados após a alteração
+                JOptionPane.showMessageDialog(this, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         gbc.gridx = 0;

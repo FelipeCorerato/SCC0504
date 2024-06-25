@@ -1,20 +1,6 @@
 {
   "books": [
     {
-      "title": "Java Programming",
-      "author": "John Doe",
-      "isbn": "1234567890",
-      "category": "Programming",
-      "isAvailable": true
-    },
-    {
-      "title": "Effective Java",
-      "author": "Joshua Bloch",
-      "isbn": "0987654321",
-      "category": "Programming",
-      "isAvailable": false
-    },
-    {
       "title": "Clean Code",
       "author": "Robert C. Martin",
       "isbn": "1122334455",
@@ -53,13 +39,6 @@
       "title": "Java Concurrency in Practice",
       "author": "Brian Goetz",
       "isbn": "7766554433",
-      "category": "Programming",
-      "isAvailable": true
-    },
-    {
-      "title": "Spring in Action",
-      "author": "Craig Walls",
-      "isbn": "6655443322",
       "category": "Programming",
       "isAvailable": true
     },
@@ -193,7 +172,7 @@
     },
     {
       "name": "felipe",
-      "contactInfo": "felipe@exemple.com"
+      "contactInfo": "felipe"
     }
   ],
   "loans": [
@@ -276,6 +255,22 @@
       "loanDate": "2024-06-24",
       "dueDate": "2024-07-08",
       "isReturned": true
+    },
+    {
+      "book": {
+        "title": "Java Programming",
+        "author": "John Doe",
+        "isbn": "1234567890",
+        "category": "Programming",
+        "isAvailable": false
+      },
+      "patron": {
+        "name": "Alice",
+        "contactInfo": "alice@example.com"
+      },
+      "loanDate": "2024-06-24",
+      "dueDate": "2024-07-08",
+      "isReturned": false
     }
   ]
 }

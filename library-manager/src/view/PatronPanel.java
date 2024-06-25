@@ -74,6 +74,14 @@ public class PatronPanel extends JPanel {
         gbc.gridwidth = 4;
         formPanel.add(addButton, gbc);
 
+        JButton deleteButton = new JButton("Delete Patron");
+        deleteButton.addActionListener(e -> deletePatron());
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 4;
+        formPanel.add(deleteButton, gbc);
+
         add(formPanel, BorderLayout.SOUTH);
 
         updatePatronTable();
@@ -89,6 +97,18 @@ public class PatronPanel extends JPanel {
                     patron.getContactInfo()
             };
             patronTableModel.addRow(rowData);
+        }
+    }
+
+    private void deletePatron() {
+        int selectedRow = patronTable.getSelectedRow();
+        if (selectedRow != -1) {
+            String name = (String) patronTableModel.getValueAt(selectedRow, 0);
+            Patron patron = libraryManager.searchPatrons(name).get(0);
+            libraryManager.deletePatron(patron);
+            updatePatronTable();
+            loanPanel.updateComboBoxes();
+            saveData();  // Salva os dados após a alteração
         }
     }
 

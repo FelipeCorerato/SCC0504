@@ -23,9 +23,15 @@ public class AuthManager {
         return users;
     }
 
-    public void addUser(User user) {
+    public boolean addUser(User user) {
+        for (User existingUser : users) {
+            if (existingUser.getUsername().equals(user.getUsername())) {
+                return false; // Username already exists
+            }
+        }
         users.add(user);
         saveUsers();
+        return true;
     }
 
     public void deleteUser(String username) {

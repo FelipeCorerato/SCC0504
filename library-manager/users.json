@@ -10,8 +10,8 @@
     "role": "ADMIN"
   },
   {
-    "username": "teste",
-    "password": "teste",
+    "username": "user",
+    "password": "user",
     "role": "LIBRARIAN"
   }
 ]

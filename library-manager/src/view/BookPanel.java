@@ -94,6 +94,14 @@ public class BookPanel extends JPanel {
         gbc.gridwidth = 4;
         formPanel.add(addButton, gbc);
 
+        JButton deleteButton = new JButton("Delete Book");
+        deleteButton.addActionListener(e -> deleteBook());
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 4;
+        formPanel.add(deleteButton, gbc);
+
         add(formPanel, BorderLayout.SOUTH);
 
         updateBookTable();
@@ -112,6 +120,27 @@ public class BookPanel extends JPanel {
                     book.isAvailable() ? "Yes" : "No"
             };
             bookTableModel.addRow(rowData);
+        }
+    }
+
+    private void deleteBook() {
+        int selectedRow = bookTable.getSelectedRow();
+        if (selectedRow != -1) {
+            String isbn = (String) bookTableModel.getValueAt(selectedRow, 2);
+            Book bookToDelete = null;
+            List<Book> books = libraryManager.searchBooks("");
+            for (Book book : books) {
+                if (book.getIsbn().equals(isbn)) {
+                    bookToDelete = book;
+                    break;
+                }
+            }
+            if (bookToDelete != null) {
+                libraryManager.deleteBook(bookToDelete);
+                updateBookTable();
+                loanPanel.updateComboBoxes();
+                saveData();  // Salva os dados após a alteração
+            }
         }
     }
 
