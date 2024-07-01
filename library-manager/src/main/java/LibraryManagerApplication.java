@@ -15,6 +15,24 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * The main application class for the Library Management System.
+ * This class sets up the user interface and manages the interactions between the user and the system.
+ * It handles user authentication, navigation between different panels, and data loading.
+ *
+ * <p>
+ * The application includes panels for managing books, patrons, loans, user management, and searching.
+ * It also includes a navigation panel for switching between these panels.
+ * </p>
+ *
+ * @see LibraryManager
+ * @see AuthManager
+ * @see BookPanel
+ * @see PatronPanel
+ * @see LoanPanel
+ * @see UserManagementPanel
+ * @see SearchPanel
+ */
 public class LibraryManagerApplication extends JFrame {
     private LibraryManager libraryManager;
     private AuthManager authManager;
@@ -25,6 +43,10 @@ public class LibraryManagerApplication extends JFrame {
     private UserManagementPanel userManagementPanel;
     private SearchPanel searchPanel;
 
+    /**
+     * Constructs a LibraryManagerApplication object, sets the look and feel,
+     * initializes the user interface, and loads the data.
+     */
     public LibraryManagerApplication() {
         setLookAndFeel();
         libraryManager = new LibraryManager();
@@ -33,6 +55,9 @@ public class LibraryManagerApplication extends JFrame {
         loadData();
     }
 
+    /**
+     * Sets the look and feel of the application to Nimbus, if available.
+     */
     private void setLookAndFeel() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -42,10 +67,13 @@ public class LibraryManagerApplication extends JFrame {
                 }
             }
         } catch (Exception e) {
-            // Se Nimbus não estiver disponível, use o padrão.
+            // If Nimbus is not available, use the default look and feel.
         }
     }
 
+    /**
+     * Initializes the user interface, sets up the navigation panel, and handles user authentication.
+     */
     private void initializeUI() {
         setTitle("Library System");
         setSize(800, 600);
@@ -112,9 +140,13 @@ public class LibraryManagerApplication extends JFrame {
         userManagementButton.addActionListener(e -> cardLayout.show(contentPanel, "User Management"));
 
         logoutButton.addActionListener(e -> logoff());
-
     }
 
+    /**
+     * Authenticates the user by displaying a login dialog.
+     *
+     * @return true if the user is authenticated, false otherwise
+     */
     private boolean authenticateUser() {
         JPanel loginPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -186,6 +218,13 @@ public class LibraryManagerApplication extends JFrame {
         return loggedInUser != null;
     }
 
+    /**
+     * Authenticates the user using the provided username and password fields.
+     *
+     * @param usernameField the text field containing the username
+     * @param passwordField the password field containing the password
+     * @param loginPanel the login panel
+     */
     private void authenticate(JTextField usernameField, JPasswordField passwordField, JPanel loginPanel) {
         String username = usernameField.getText();
         String password = new String(passwordField.getPassword());
@@ -198,6 +237,10 @@ public class LibraryManagerApplication extends JFrame {
             JOptionPane.showMessageDialog(loginPanel, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    /**
+     * Loads the library data and updates the panels.
+     */
     private void loadData() {
         libraryManager.loadData();
         bookPanel.updateBookTable();
@@ -207,6 +250,9 @@ public class LibraryManagerApplication extends JFrame {
         JOptionPane.showMessageDialog(this, "Data loaded successfully");
     }
 
+    /**
+     * Logs off the current user and restarts the application.
+     */
     private void logoff() {
         loggedInUser = null;
         dispose();
@@ -216,6 +262,11 @@ public class LibraryManagerApplication extends JFrame {
         });
     }
 
+    /**
+     * The main method to launch the application.
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LibraryManagerApplication app = new LibraryManagerApplication();

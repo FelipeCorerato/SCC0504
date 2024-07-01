@@ -8,18 +8,42 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Represents the panel for managing patrons in the library system.
+ * This panel allows adding, editing, deleting, and displaying patrons.
+ * It also provides a form for entering patron details.
+ *
+ * <p>
+ * The panel integrates with the {@link LibraryManager} to manage the patrons
+ * and the {@link LoanPanel} to update the loan information when patrons are modified.
+ * </p>
+ *
+ * @see LibraryManager
+ * @see Patron
+ * @see LoanPanel
+ */
 public class PatronPanel extends JPanel {
     private LibraryManager libraryManager;
     private DefaultTableModel patronTableModel;
     private JTable patronTable;
     private LoanPanel loanPanel;
 
+    /**
+     * Constructs a PatronPanel object with the specified LibraryManager and LoanPanel.
+     *
+     * @param libraryManager the library manager to handle patron data
+     * @param loanPanel the loan panel to update loan information
+     */
     public PatronPanel(LibraryManager libraryManager, LoanPanel loanPanel) {
         this.libraryManager = libraryManager;
         this.loanPanel = loanPanel;
         initializeUI();
     }
 
+    /**
+     * Initializes the user interface for the patron panel.
+     * Sets up the table for displaying patrons and the form for adding new patrons.
+     */
     private void initializeUI() {
         setLayout(new BorderLayout());
 
@@ -104,6 +128,10 @@ public class PatronPanel extends JPanel {
         updatePatronTable();
     }
 
+    /**
+     * Updates the table displaying the list of patrons.
+     * Clears the table and repopulates it with the current patron data.
+     */
     public void updatePatronTable() {
         patronTableModel.setRowCount(0);
         List<Patron> patrons = libraryManager.getPatrons();
@@ -117,6 +145,10 @@ public class PatronPanel extends JPanel {
         }
     }
 
+    /**
+     * Deletes the selected patron from the table and updates the patron data.
+     * Also updates the loan information and saves the data.
+     */
     private void deletePatron() {
         int selectedRow = patronTable.getSelectedRow();
         if (selectedRow != -1) {
@@ -138,6 +170,9 @@ public class PatronPanel extends JPanel {
         }
     }
 
+    /**
+     * Saves the current patron data to the persistent storage.
+     */
     private void saveData() {
         libraryManager.saveData();
     }
