@@ -1,6 +1,6 @@
-package view;
+package main.java.view;
 
-import model.Book;
+import main.java.model.Book;
 
 import javax.swing.*;
 import java.awt.*;

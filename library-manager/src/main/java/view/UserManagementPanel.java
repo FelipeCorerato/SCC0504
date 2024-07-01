@@ -1,13 +1,14 @@
-package view;
+package main.java.view;
 
-import model.AuthManager;
-import model.Role;
-import model.User;
+import main.java.model.Admin;
+import main.java.model.AuthManager;
+import main.java.model.Librarian;
+import main.java.model.Role;
+import main.java.model.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.IOException;
 import java.util.List;
 
 public class UserManagementPanel extends JPanel {
@@ -81,11 +82,10 @@ public class UserManagementPanel extends JPanel {
             String password = new String(passwordField.getPassword());
             Role role = (Role) roleComboBox.getSelectedItem();
 
-            User newUser = new User(username, password, role);
+            User newUser = role == Role.ADMIN ? new Admin(username, password) : new Librarian(username, password);
             boolean success = authManager.addUser(newUser);
             if (success) {
                 updateUserTable();
-                saveData();  // Salva os dados após a alteração
                 JOptionPane.showMessageDialog(this, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
@@ -121,14 +121,9 @@ public class UserManagementPanel extends JPanel {
             if (!username.equals(loggedInUser.getUsername())) {
                 authManager.deleteUser(username);
                 updateUserTable();
-                saveData();  // Salva os dados após a alteração
             } else {
                 JOptionPane.showMessageDialog(this, "You cannot delete your own account", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }
-
-    private void saveData() {
-        authManager.saveUsers();
     }
 }

@@ -69,20 +69,6 @@
       "isbn": "2211009988",
       "category": "Computer Science",
       "isAvailable": true
-    },
-    {
-      "title": "The Mythical Man-Month",
-      "author": "Frederick P. Brooks Jr.",
-      "isbn": "1100998877",
-      "category": "Software Engineering",
-      "isAvailable": true
-    },
-    {
-      "title": "You Don\u0027t Know JS",
-      "author": "Kyle Simpson",
-      "isbn": "0099887766",
-      "category": "Programming",
-      "isAvailable": true
     }
   ],
   "patrons": [
@@ -172,7 +158,7 @@
     },
     {
       "name": "felipe",
-      "contactInfo": "felipe"
+      "contactInfo": "felipe@example"
     }
   ],
   "loans": [
@@ -190,7 +176,7 @@
       },
       "loanDate": "2023-06-01",
       "dueDate": "2023-06-15",
-      "isReturned": false
+      "isReturned": true
     },
     {
       "book": {

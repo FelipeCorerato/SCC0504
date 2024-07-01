@@ -1,12 +1,11 @@
-package view;
+package main.java.view;
 
-import model.Book;
-import model.LibraryManager;
+import main.java.model.Book;
+import main.java.model.LibraryManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.IOException;
 import java.util.List;
 
 public class BookPanel extends JPanel {
@@ -82,7 +81,7 @@ public class BookPanel extends JPanel {
             String isbn = isbnField.getText();
             String category = categoryField.getText();
 
-            Book book = new Book(title, author, isbn, category);
+            Book book = new Book(title, author, isbn, category, true);
             libraryManager.addBook(book);
             updateBookTable();
             loanPanel.updateComboBoxes();
@@ -109,7 +108,7 @@ public class BookPanel extends JPanel {
 
     public void updateBookTable() {
         bookTableModel.setRowCount(0);
-        List<Book> books = libraryManager.searchBooks("");
+        List<Book> books = libraryManager.getBooks();
 
         for (Book book : books) {
             Object[] rowData = {
@@ -128,7 +127,7 @@ public class BookPanel extends JPanel {
         if (selectedRow != -1) {
             String isbn = (String) bookTableModel.getValueAt(selectedRow, 2);
             Book bookToDelete = null;
-            List<Book> books = libraryManager.searchBooks("");
+            List<Book> books = libraryManager.getBooks();
             for (Book book : books) {
                 if (book.getIsbn().equals(isbn)) {
                     bookToDelete = book;
@@ -145,10 +144,6 @@ public class BookPanel extends JPanel {
     }
 
     private void saveData() {
-        try {
-            libraryManager.saveData();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        libraryManager.saveData();
     }
 }

@@ -1,12 +1,11 @@
-package view;
+package main.java.view;
 
-import model.LibraryManager;
-import model.Patron;
+import main.java.model.LibraryManager;
+import main.java.model.Patron;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.IOException;
 import java.util.List;
 
 public class PatronPanel extends JPanel {
@@ -89,7 +88,7 @@ public class PatronPanel extends JPanel {
 
     public void updatePatronTable() {
         patronTableModel.setRowCount(0);
-        List<Patron> patrons = libraryManager.searchPatrons("");
+        List<Patron> patrons = libraryManager.getPatrons();
 
         for (Patron patron : patrons) {
             Object[] rowData = {
@@ -104,19 +103,24 @@ public class PatronPanel extends JPanel {
         int selectedRow = patronTable.getSelectedRow();
         if (selectedRow != -1) {
             String name = (String) patronTableModel.getValueAt(selectedRow, 0);
-            Patron patron = libraryManager.searchPatrons(name).get(0);
-            libraryManager.deletePatron(patron);
-            updatePatronTable();
-            loanPanel.updateComboBoxes();
-            saveData();  // Salva os dados após a alteração
+            Patron patronToDelete = null;
+            List<Patron> patrons = libraryManager.getPatrons();
+            for (Patron patron : patrons) {
+                if (patron.getName().equals(name)) {
+                    patronToDelete = patron;
+                    break;
+                }
+            }
+            if (patronToDelete != null) {
+                libraryManager.deletePatron(patronToDelete);
+                updatePatronTable();
+                loanPanel.updateComboBoxes();
+                saveData();  // Salva os dados após a alteração
+            }
         }
     }
 
     private void saveData() {
-        try {
-            libraryManager.saveData();
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error saving data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        libraryManager.saveData();
     }
 }

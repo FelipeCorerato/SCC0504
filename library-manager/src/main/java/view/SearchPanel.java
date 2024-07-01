@@ -1,9 +1,9 @@
-package view;
+package main.java.view;
 
-import model.Book;
-import model.Loan;
-import model.Patron;
-import model.LibraryManager;
+import main.java.model.Book;
+import main.java.model.Loan;
+import main.java.model.Patron;
+import main.java.model.LibraryManager;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

@@ -1,0 +1,22 @@
+[
+  {
+    "username": "admin",
+    "password": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+    "role": "ADMIN"
+  },
+  {
+    "username": "librarian1",
+    "password": "6518454a49ab2912238b510b2221f0fc1ce404986d3fb94bb34311ff6069d467",
+    "role": "LIBRARIAN"
+  },
+  {
+    "username": "felipe",
+    "password": "2bd2d3a31934d76198acc030caca4c31965474fe5fa48f35fef79d0fd74ee1b2",
+    "role": "ADMIN"
+  },
+  {
+    "username": "teste",
+    "password": "46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5",
+    "role": "ADMIN"
+  }
+]

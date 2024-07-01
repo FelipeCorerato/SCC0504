@@ -1,6 +1,6 @@
-package view;
+package main.java.view;
 
-import model.Patron;
+import main.java.model.Patron;
 
 import javax.swing.*;
 import java.awt.*;

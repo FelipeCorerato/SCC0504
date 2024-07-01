@@ -1,20 +1,19 @@
-package app;
+package main.java;
 
-import model.AuthManager;
-import model.LibraryManager;
-import model.Role;
-import model.User;
-import view.BookPanel;
-import view.LoanPanel;
-import view.PatronPanel;
-import view.SearchPanel;
-import view.UserManagementPanel;
+import main.java.model.AuthManager;
+import main.java.model.LibraryManager;
+import main.java.model.Role;
+import main.java.model.User;
+import main.java.view.BookPanel;
+import main.java.view.LoanPanel;
+import main.java.view.PatronPanel;
+import main.java.view.SearchPanel;
+import main.java.view.UserManagementPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
-public class LibraryApp extends JFrame {
+public class LibraryManagerApplication extends JFrame {
     private LibraryManager libraryManager;
     private AuthManager authManager;
     private User loggedInUser;
@@ -24,10 +23,10 @@ public class LibraryApp extends JFrame {
     private UserManagementPanel userManagementPanel;
     private SearchPanel searchPanel;
 
-    public LibraryApp() {
+    public LibraryManagerApplication() {
         setLookAndFeel();
         libraryManager = new LibraryManager();
-        authManager = new AuthManager();
+        authManager = AuthManager.getInstance();
         initializeUI();
         loadData();
     }
@@ -181,21 +180,17 @@ public class LibraryApp extends JFrame {
     }
 
     private void loadData() {
-        try {
-            libraryManager.loadData();
-            bookPanel.updateBookTable();
-            patronPanel.updatePatronTable();
-            loanPanel.updateLoanTable();
-            loanPanel.updateComboBoxes(); // Atualiza comboBoxes após carregar dados
-            JOptionPane.showMessageDialog(this, "Data loaded successfully");
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Error loading data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        libraryManager.loadData();
+        bookPanel.updateBookTable();
+        patronPanel.updatePatronTable();
+        loanPanel.updateLoanTable();
+        loanPanel.updateComboBoxes(); // Atualiza comboBoxes após carregar dados
+        JOptionPane.showMessageDialog(this, "Data loaded successfully");
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            LibraryApp app = new LibraryApp();
+            LibraryManagerApplication app = new LibraryManagerApplication();
             app.setVisible(true);
         });
     }

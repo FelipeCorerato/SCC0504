@@ -1,6 +1,6 @@
-package model;
+package main.java.model;
 
-public class User {
+public abstract class User {
     private String username;
     private String password;
     private Role role;
@@ -15,10 +15,6 @@ public class User {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -29,9 +25,5 @@ public class User {
 
     public Role getRole() {
         return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }
