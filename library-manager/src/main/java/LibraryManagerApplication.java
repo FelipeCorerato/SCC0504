@@ -12,6 +12,8 @@ import main.java.view.UserManagementPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LibraryManagerApplication extends JFrame {
     private LibraryManager libraryManager;
@@ -59,13 +61,14 @@ public class LibraryManagerApplication extends JFrame {
 
         // Painel de navegação
         JPanel navigationPanel = new JPanel();
-        navigationPanel.setLayout(new GridLayout(1, 5));
+        navigationPanel.setLayout(new GridLayout(1, 6));
 
         JButton bookButton = new JButton("Books");
         JButton patronButton = new JButton("Patrons");
         JButton loanButton = new JButton("Loans");
         JButton searchButton = new JButton("Search");
         JButton userManagementButton = new JButton("User Management");
+        JButton logoutButton = new JButton("Logoff");
 
         navigationPanel.add(bookButton);
         navigationPanel.add(patronButton);
@@ -76,6 +79,8 @@ public class LibraryManagerApplication extends JFrame {
         if (loggedInUser.getRole() == Role.ADMIN) {
             navigationPanel.add(userManagementButton);
         }
+
+        navigationPanel.add(logoutButton);
 
         add(navigationPanel, BorderLayout.NORTH);
 
@@ -105,6 +110,9 @@ public class LibraryManagerApplication extends JFrame {
         loanButton.addActionListener(e -> cardLayout.show(contentPanel, "Loans"));
         searchButton.addActionListener(e -> cardLayout.show(contentPanel, "Search"));
         userManagementButton.addActionListener(e -> cardLayout.show(contentPanel, "User Management"));
+
+        logoutButton.addActionListener(e -> logoff());
+
     }
 
     private boolean authenticateUser() {
@@ -155,16 +163,15 @@ public class LibraryManagerApplication extends JFrame {
         loginPanel.add(loginButton, gbc);
 
         // Adiciona ação ao botão de login
-        loginButton.addActionListener(e -> {
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
+        loginButton.addActionListener(e -> authenticate(usernameField, passwordField, loginPanel));
 
-            loggedInUser = authManager.authenticate(username, password);
-            if (loggedInUser != null) {
-                JOptionPane.showMessageDialog(loginPanel, "Login successful", "Welcome", JOptionPane.INFORMATION_MESSAGE);
-                SwingUtilities.getWindowAncestor(loginPanel).dispose();
-            } else {
-                JOptionPane.showMessageDialog(loginPanel, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
+        // Adiciona ação ao pressionar Enter no campo de senha
+        passwordField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    authenticate(usernameField, passwordField, loginPanel);
+                }
             }
         });
 
@@ -179,6 +186,18 @@ public class LibraryManagerApplication extends JFrame {
         return loggedInUser != null;
     }
 
+    private void authenticate(JTextField usernameField, JPasswordField passwordField, JPanel loginPanel) {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+
+        loggedInUser = authManager.authenticate(username, password);
+        if (loggedInUser != null) {
+            JOptionPane.showMessageDialog(loginPanel, "Login successful", "Welcome", JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.getWindowAncestor(loginPanel).dispose();
+        } else {
+            JOptionPane.showMessageDialog(loginPanel, "Invalid credentials", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
     private void loadData() {
         libraryManager.loadData();
         bookPanel.updateBookTable();
@@ -186,6 +205,15 @@ public class LibraryManagerApplication extends JFrame {
         loanPanel.updateLoanTable();
         loanPanel.updateComboBoxes(); // Atualiza comboBoxes após carregar dados
         JOptionPane.showMessageDialog(this, "Data loaded successfully");
+    }
+
+    private void logoff() {
+        loggedInUser = null;
+        dispose();
+        SwingUtilities.invokeLater(() -> {
+            LibraryManagerApplication app = new LibraryManagerApplication();
+            app.setVisible(true);
+        });
     }
 
     public static void main(String[] args) {

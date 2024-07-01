@@ -82,13 +82,22 @@ public class UserManagementPanel extends JPanel {
             String password = new String(passwordField.getPassword());
             Role role = (Role) roleComboBox.getSelectedItem();
 
-            User newUser = role == Role.ADMIN ? new Admin(username, password) : new Librarian(username, password);
-            boolean success = authManager.addUser(newUser);
-            if (success) {
-                updateUserTable();
-                JOptionPane.showMessageDialog(this, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            if (username.isEmpty() || password.isEmpty() || role == null) {
+                JOptionPane.showMessageDialog(this, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                User newUser = role == Role.ADMIN ? new Admin(username, password) : new Librarian(username, password);
+                boolean success = authManager.addUser(newUser);
+                if (success) {
+                    updateUserTable();
+                    JOptionPane.showMessageDialog(this, "User added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Limpar os campos após adicionar o usuário
+                    usernameField.setText("");
+                    passwordField.setText("");
+                    roleComboBox.setSelectedIndex(0);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Username already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 

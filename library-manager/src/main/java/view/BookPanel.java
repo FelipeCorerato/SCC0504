@@ -42,37 +42,55 @@ public class BookPanel extends JPanel {
         JTextField isbnField = new JTextField(20);
         JTextField categoryField = new JTextField(20);
 
+        // Ícones de ajuda
+        HelpTooltip titleHelp = new HelpTooltip("Enter the title of the book");
+        HelpTooltip authorHelp = new HelpTooltip("Enter the author's name");
+        HelpTooltip isbnHelp = new HelpTooltip("Enter the ISBN of the book (e.g., 9783161484100)");
+        HelpTooltip categoryHelp = new HelpTooltip("Enter the category of the book (e.g., Fiction, Science)");
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("Title:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(titleField, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(titleHelp, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("Author:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(authorField, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(authorHelp, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("ISBN:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(isbnField, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(isbnHelp, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("Category:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(categoryField, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(categoryHelp, gbc);
 
         JButton addButton = new JButton("Add Book");
         addButton.addActionListener(e -> {
@@ -81,11 +99,23 @@ public class BookPanel extends JPanel {
             String isbn = isbnField.getText();
             String category = categoryField.getText();
 
-            Book book = new Book(title, author, isbn, category, true);
-            libraryManager.addBook(book);
-            updateBookTable();
-            loanPanel.updateComboBoxes();
-            saveData();  // Salva os dados após a alteração
+            if (title.isEmpty() || author.isEmpty() || isbn.isEmpty() || category.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (!isbn.matches("\\d+")) {
+                JOptionPane.showMessageDialog(this, "ISBN must contain only numbers", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Book book = new Book(title, author, isbn, category, true);
+                libraryManager.addBook(book);
+                updateBookTable();
+                loanPanel.updateComboBoxes();
+                saveData();  // Salva os dados após a alteração
+
+                // Limpar os campos após adicionar o livro
+                titleField.setText("");
+                authorField.setText("");
+                isbnField.setText("");
+                categoryField.setText("");
+            }
         });
 
         gbc.gridx = 0;

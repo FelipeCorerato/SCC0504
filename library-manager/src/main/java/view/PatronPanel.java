@@ -40,32 +40,50 @@ public class PatronPanel extends JPanel {
         JTextField nameField = new JTextField(20);
         JTextField contactInfoField = new JTextField(20);
 
+        // Ícones de ajuda
+        HelpTooltip nameHelp = new HelpTooltip("Enter the name of the patron");
+        HelpTooltip contactInfoHelp = new HelpTooltip("Enter the contact information of the patron");
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("Name:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(nameField, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(nameHelp, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("Contact Info:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(contactInfoField, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(contactInfoHelp, gbc);
 
         JButton addButton = new JButton("Add Patron");
         addButton.addActionListener(e -> {
             String name = nameField.getText();
             String contactInfo = contactInfoField.getText();
 
-            Patron patron = new Patron(name, contactInfo);
-            libraryManager.addPatron(patron);
-            updatePatronTable();
-            loanPanel.updateComboBoxes();
-            saveData();  // Salva os dados após a alteração
+            if (name.isEmpty() || contactInfo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "All fields must be filled out", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Patron patron = new Patron(name, contactInfo);
+                libraryManager.addPatron(patron);
+                updatePatronTable();
+                loanPanel.updateComboBoxes();
+                saveData();  // Salva os dados após a alteração
+
+                // Limpar os campos após adicionar o patrono
+                nameField.setText("");
+                contactInfoField.setText("");
+            }
         });
 
         gbc.gridx = 0;

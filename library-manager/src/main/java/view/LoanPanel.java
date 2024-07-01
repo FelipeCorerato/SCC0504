@@ -16,6 +16,7 @@ public class LoanPanel extends JPanel {
     private JTable loanTable;
     private JComboBox<Book> bookComboBox;
     private JComboBox<Patron> patronComboBox;
+    private JCheckBox showOpenLoansOnly;
 
     public LoanPanel(LibraryManager libraryManager) {
         this.libraryManager = libraryManager;
@@ -42,21 +43,31 @@ public class LoanPanel extends JPanel {
         bookComboBox = new JComboBox<>();
         patronComboBox = new JComboBox<>();
 
+        // Ícones de ajuda
+        HelpTooltip bookHelp = new HelpTooltip("Select the book to be loaned");
+        HelpTooltip patronHelp = new HelpTooltip("Select the patron borrowing the book");
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("Book:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(bookComboBox, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(bookHelp, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         formPanel.add(new JLabel("Patron:"), gbc);
         gbc.gridx = 1;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 2;
         formPanel.add(patronComboBox, gbc);
+        gbc.gridx = 3;
+        gbc.gridwidth = 1;
+        formPanel.add(patronHelp, gbc);
 
         JButton addButton = new JButton("Perform Loan");
         addButton.addActionListener(e -> {
@@ -65,6 +76,7 @@ public class LoanPanel extends JPanel {
             libraryManager.performLoan(book, patron);
             updateLoanTable();
             updateComboBoxes();
+            saveData();  // Salva os dados após a alteração
         });
 
         gbc.gridx = 0;
@@ -82,6 +94,12 @@ public class LoanPanel extends JPanel {
 
         add(formPanel, BorderLayout.SOUTH);
 
+        // Checkbox para mostrar apenas empréstimos em aberto
+        showOpenLoansOnly = new JCheckBox("Show Open Loans Only");
+        showOpenLoansOnly.addActionListener(e -> updateLoanTable());
+
+        add(showOpenLoansOnly, BorderLayout.NORTH);
+
         updateLoanTable();
         updateComboBoxes();
     }
@@ -91,6 +109,9 @@ public class LoanPanel extends JPanel {
         List<Loan> loans = libraryManager.getLoans();
 
         for (Loan loan : loans) {
+            if (showOpenLoansOnly.isSelected() && loan.isReturned()) {
+                continue;
+            }
             Object[] rowData = {
                     loan.getBook().getTitle(),
                     loan.getPatron().getName(),
@@ -140,7 +161,12 @@ public class LoanPanel extends JPanel {
                 libraryManager.returnLoan(loanToReturn);
                 updateLoanTable();
                 updateComboBoxes();
+                saveData();  // Salva os dados após a alteração
             }
         }
+    }
+
+    private void saveData() {
+        libraryManager.saveData();
     }
 }
